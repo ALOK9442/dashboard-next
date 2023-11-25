@@ -33,11 +33,7 @@ const photoSlice = createSlice({
     },
     unsavePhoto: (state, action: PayloadAction<number>) => {
       const photoIdToRemove = action.payload;
-
-      // Remove the item from the saved array
       state.saved = state.saved.filter((id) => id !== photoIdToRemove);
-
-      // Update localStorage with the new saved array
       localStorage.setItem("saved", JSON.stringify(state.saved));
     },
     likePhoto: (state, action: PayloadAction<number>) => {
