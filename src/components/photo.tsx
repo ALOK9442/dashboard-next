@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../app/store/store';
-import { setPhotos, savePhoto, unsavePhoto, likePhoto, unlikePhoto } from '../app/features/photoslice';
+import { setPhotos, savePhoto, unsavePhoto, toggleLikePhoto } from '../app/features/photoslice';
 
 const Photos: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,12 +24,8 @@ const Photos: React.FC = () => {
     dispatch(unsavePhoto(id));
   };
 
-  const handleLikePhoto = (id: number) => {
-    dispatch(likePhoto(id));
-  };
-
-  const handleUnlikePhoto = (id: number) => {
-    dispatch(unlikePhoto(id));
+  const handleToggleLikePhoto = (id: number) => {
+    dispatch(toggleLikePhoto(id));
   };
 
   const goToNextPage = () => {
@@ -61,7 +57,7 @@ const Photos: React.FC = () => {
       {currentPhotos.map((photo) => (
         <div key={photo.id} className="relative">
           <img src={photo.thumbnailUrl} alt={photo.title} className='mt-2'/>
-          <p className=" text-white font-bold flex space-x-4 mt-2">
+          <p className=" text-white font-bold flex space-x-4">
             {savedPhotos.includes(photo.id) ? (
               <button
                 onClick={() => handleUnsavePhoto(photo.id)}
@@ -74,15 +70,15 @@ const Photos: React.FC = () => {
                 Save
               </button>
             )}
-            {likedPhotos.includes(photo.id) ? (
+            {likedPhotos[photo.id] ? (
               <button
-                onClick={() => handleUnlikePhoto(photo.id)}
+                onClick={() => handleToggleLikePhoto(photo.id)}
                 className="bg-blue-500 ml-2 py-2 px-4 border border-black"
               >
                 Unlike
               </button>
             ) : (
-              <button onClick={() => handleLikePhoto(photo.id)} className="bg-white text-blue-500 border border-black">
+              <button onClick={() => handleToggleLikePhoto(photo.id)} className="bg-white text-blue-500 border border-black">
                 Like
               </button>
             )}

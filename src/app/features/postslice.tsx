@@ -10,14 +10,14 @@ interface Post {
 interface PostsState {
   data: Post[];
   saved: number[];
-  liked: number[];
+  liked: Record<number, boolean>; // Use Record<number, boolean> for liked posts
   savedPosts: Post[];
 }
 
 const initialState: PostsState = {
   data: [],
   saved: [],
-  liked: [],
+  liked: {},
   savedPosts: [],
 };
 
@@ -42,12 +42,9 @@ const postSlice = createSlice({
       state.savedPosts = state.savedPosts.filter((post) => post.id !== postIdToRemove);
       localStorage.setItem('saved', JSON.stringify(state.saved));
     },
-
-    likePost: (state, action: PayloadAction<number>) => {
-      state.liked.push(action.payload);
-    },
-    unlikePost: (state, action: PayloadAction<number>) => {
-      state.liked = state.liked.filter((id) => id !== action.payload);
+    toggleLikePost: (state, action: PayloadAction<number>) => {
+      const postId = action.payload;
+      state.liked[postId] = !state.liked[postId];
     },
   },
 });
@@ -56,8 +53,7 @@ export const {
   setPosts,
   savePost,
   unsavePost,
-  likePost,
-  unlikePost,
+  toggleLikePost,
 } = postSlice.actions;
 
 export default postSlice.reducer;

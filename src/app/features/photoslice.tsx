@@ -11,14 +11,14 @@ interface Photo {
 interface PhotosState {
   data: Photo[];
   saved: number[];
-  liked: number[];
+  liked: Record<number, boolean>;
   savedPhotos: Photo[];
 }
 
 const initialPhotosState: PhotosState = {
   data: [],
   saved: [],
-  liked: [],
+  liked: {},
   savedPhotos: [],
 };
 
@@ -43,11 +43,9 @@ const photoSlice = createSlice({
       state.savedPhotos = state.savedPhotos.filter((photo) => photo.id !== photoIdToRemove);
       localStorage.setItem('saved', JSON.stringify(state.saved));
     },
-    likePhoto: (state, action: PayloadAction<number>) => {
-      state.liked.push(action.payload);
-    },
-    unlikePhoto: (state, action: PayloadAction<number>) => {
-      state.liked = state.liked.filter((id) => id !== action.payload);
+    toggleLikePhoto: (state, action: PayloadAction<number>) => {
+      const photoId = action.payload;
+      state.liked[photoId] = !state.liked[photoId];
     },
   },
 });
@@ -56,8 +54,7 @@ export const {
   setPhotos,
   savePhoto,
   unsavePhoto,
-  likePhoto,
-  unlikePhoto,
+  toggleLikePhoto,
 } = photoSlice.actions;
 
 export default photoSlice.reducer;
