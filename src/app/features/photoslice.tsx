@@ -12,12 +12,14 @@ interface PhotosState {
   data: Photo[];
   saved: number[];
   liked: number[];
+  savedPhotos: Photo[];
 }
 
 const initialPhotosState: PhotosState = {
   data: [],
   saved: [],
   liked: [],
+  savedPhotos: [],
 };
 
 const photoSlice = createSlice({
@@ -28,13 +30,18 @@ const photoSlice = createSlice({
       state.data = action.payload;
     },
     savePhoto: (state, action: PayloadAction<number>) => {
-      state.saved.push(action.payload);
-      localStorage.setItem("saved", JSON.stringify(state.saved));
+      const photoToSave = state.data.find((photo) => photo.id === action.payload);
+      if (photoToSave) {
+        state.saved.push(action.payload);
+        state.savedPhotos.push(photoToSave);
+        localStorage.setItem('saved', JSON.stringify(state.saved));
+      }
     },
     unsavePhoto: (state, action: PayloadAction<number>) => {
       const photoIdToRemove = action.payload;
       state.saved = state.saved.filter((id) => id !== photoIdToRemove);
-      localStorage.setItem("saved", JSON.stringify(state.saved));
+      state.savedPhotos = state.savedPhotos.filter((photo) => photo.id !== photoIdToRemove);
+      localStorage.setItem('saved', JSON.stringify(state.saved));
     },
     likePhoto: (state, action: PayloadAction<number>) => {
       state.liked.push(action.payload);

@@ -1,4 +1,3 @@
-// pages/posts.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,6 +9,7 @@ const Posts: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const posts = useSelector((state: RootState) => state.posts.data);
     const savedPosts = useSelector((state: RootState) => state.posts.saved);
+    const likedPosts = useSelector((state: RootState) => state.posts.liked); // Updated to use likedPosts
 
     const itemsPerPage = 20;
 
@@ -24,6 +24,14 @@ const Posts: React.FC = () => {
     const handleUnsavePost = (id: number) => {
         dispatch(unsavePost(id));
     };
+
+    const handleLikePost = (id: number) => {
+        dispatch(likePost(id));
+    }
+
+    const handleUnlikePost = (id: number) => {
+        dispatch(unlikePost(id));
+    }
 
     const goToNextPage = () => {
         setCurrentPage((prevPage) => prevPage + 1);
@@ -55,21 +63,35 @@ const Posts: React.FC = () => {
                 <div key={post.id} className="mb-4">
                     <h2>{post.title}</h2>
                     <p>{post.body}</p>
-                    {savedPosts.includes(post.id) ? (
-                        <button
-                            onClick={() => handleUnsavePost(post.id)}
-                            className="bg-gray-500 text-white py-2 px-4 rounded-full mt-2"
-                        >
-                            Unsave
-                        </button>
-                    ) : (
-                        <button
-                            onClick={() => handleSavePost(post.id)}
-                            className="bg-green-500 text-white py-2 px-4 rounded-full mt-2"
-                        >
-                            Save
-                        </button>
-                    )}
+                    <p className=" text-white font-bold">
+                        {savedPosts.includes(post.id) ? (
+                            <button
+                                onClick={() => handleUnsavePost(post.id)}
+                                className="bg-gray-500 text-white py-2 px-4 rounded-full mt-2"
+                            >
+                                Unsave
+                            </button>
+                        ) : (
+                                <button
+                                    onClick={() => handleSavePost(post.id)}
+                                    className="bg-green-500 text-white py-2 px-4 rounded-full mt-2"
+                                >
+                                    Save
+                                </button>
+                            )}
+                        {likedPosts.includes(post.id) ? (
+                            <button
+                                onClick={() => handleUnlikePost(post.id)}
+                                className="bg-blue-500 ml-2 py-2 px-4 rounded-full"
+                            >
+                                Unlike
+                            </button>
+                        ) : (
+                                <button onClick={() => handleLikePost(post.id)} className="bg-blue-500 ml-2 py-2 px-4 rounded-full">
+                                    Like
+                                </button>
+                            )}
+                    </p>
                 </div>
             ))}
 
@@ -87,8 +109,8 @@ const Posts: React.FC = () => {
                     onClick={goToNextPage}
                     disabled={currentPage === Math.ceil(posts.length / itemsPerPage)}
                     className={`${currentPage === Math.ceil(posts.length / itemsPerPage)
-                            ? 'bg-gray-200 text-gray-700 cursor-not-allowed'
-                            : 'bg-blue-500 text-white'
+                        ? 'bg-gray-200 text-gray-700 cursor-not-allowed'
+                        : 'bg-blue-500 text-white'
                         } font-bold py-2 px-4 rounded-r`}
                 >
                     {'>'}

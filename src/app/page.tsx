@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Photos from '@/components/photo';
 import Posts from '@/components/posts';
-
+import Saved from '@/components/savedpostsandphotos';
 const Home: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('');
 
@@ -25,10 +25,19 @@ const Home: React.FC = () => {
         >
           Posts
         </button>
+        <button
+          onClick={() => setSelectedTab('saved')}
+          className={`${
+            selectedTab === 'saved' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+          } font-bold py-2 px-4 rounded-r`}
+        >
+          Saved
+        </button>
       </div>
 
       {selectedTab === 'photos' && <Photos />}
       {selectedTab === 'posts' && <Posts />}
+      {selectedTab === 'saved' && <Saved />}
     </div>
   );
 };
