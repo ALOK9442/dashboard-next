@@ -63,18 +63,18 @@ const Posts: React.FC = () => {
                 <div key={post.id} className="mb-4">
                     <h2>{post.title}</h2>
                     <p>{post.body}</p>
-                    <p className=" text-white font-bold">
+                    <p className=" text-white font-bold flex space-x-2">
                         {savedPosts.includes(post.id) ? (
                             <button
                                 onClick={() => handleUnsavePost(post.id)}
-                                className="bg-gray-500 text-white py-2 px-4 rounded-full mt-2"
+                                className="bg-gray-500 text-white py-2 px-4 border border-black"
                             >
                                 Unsave
                             </button>
                         ) : (
                                 <button
                                     onClick={() => handleSavePost(post.id)}
-                                    className="bg-green-500 text-white py-2 px-4 rounded-full mt-2"
+                                    className="bg-green-500 text-white py-2 px-4 border border-black"
                                 >
                                     Save
                                 </button>
@@ -82,12 +82,12 @@ const Posts: React.FC = () => {
                         {likedPosts.includes(post.id) ? (
                             <button
                                 onClick={() => handleUnlikePost(post.id)}
-                                className="bg-blue-500 ml-2 py-2 px-4 rounded-full"
+                                className="bg-blue-500 ml-2 py-2 px-4 border border-black"
                             >
                                 Unlike
                             </button>
                         ) : (
-                                <button onClick={() => handleLikePost(post.id)} className="bg-blue-500 ml-2 py-2 px-4 rounded-full">
+                                <button onClick={() => handleLikePost(post.id)} className="bg-blue-500 ml-2 py-2 px-4 border border-black">
                                     Like
                                 </button>
                             )}

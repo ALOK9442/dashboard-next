@@ -57,32 +57,32 @@ const Photos: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className='bg-blue-500'>
       {currentPhotos.map((photo) => (
         <div key={photo.id} className="relative">
-          <img src={photo.thumbnailUrl} alt={photo.title} />
-          <p className=" text-white font-bold">
+          <img src={photo.thumbnailUrl} alt={photo.title} className='mt-2'/>
+          <p className=" text-white font-bold flex space-x-4 mt-2">
             {savedPhotos.includes(photo.id) ? (
               <button
                 onClick={() => handleUnsavePhoto(photo.id)}
-                className="bg-gray-500 py-2 px-4 rounded-full"
+                className="bg-gray-500 py-2 px-4 border border-black"
               >
                 Unsave
               </button>
             ) : (
-              <button onClick={() => handleSavePhoto(photo.id)} className="bg-green-500 py-2 px-4 rounded-full">
+              <button onClick={() => handleSavePhoto(photo.id)} className="bg-green-500 border border-black">
                 Save
               </button>
             )}
             {likedPhotos.includes(photo.id) ? (
               <button
                 onClick={() => handleUnlikePhoto(photo.id)}
-                className="bg-blue-500 ml-2 py-2 px-4 rounded-full"
+                className="bg-blue-500 ml-2 py-2 px-4 border border-black"
               >
                 Unlike
               </button>
             ) : (
-              <button onClick={() => handleLikePhoto(photo.id)} className="bg-blue-500 ml-2 py-2 px-4 rounded-full">
+              <button onClick={() => handleLikePhoto(photo.id)} className="bg-white text-blue-500 border border-black">
                 Like
               </button>
             )}
